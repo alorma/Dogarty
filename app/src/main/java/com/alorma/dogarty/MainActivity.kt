@@ -5,9 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.setContent
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.rememberNavController
 import com.alorma.dogarty.ui.DogartyTheme
 import com.alorma.dogarty.ui.model.AppUser
 import com.alorma.dogarty.ui.screens.MainViewModel
+import com.alorma.dogarty.ui.screens.gowalk.GoWalkScreen
 import com.alorma.dogarty.ui.screens.login.LoginScreen
 import com.alorma.dogarty.ui.screens.user.UserScreen
 import org.koin.androidx.compose.getViewModel
@@ -19,20 +25,30 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             DogartyTheme {
-                InitScreen()
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = "splash"
+                ) {
+                    composable("splash") { InitScreen(navController) }
+                    composable("login") { LoginScreen() }
+                    composable("user") { UserScreen(navController) }
+                    composable("gowalk") { GoWalkScreen(navController) }
+                }
             }
         }
     }
 }
 
 @Composable
-fun InitScreen(viewModel: MainViewModel = getViewModel()) {
-
+fun InitScreen(
+    navController: NavController,
+    viewModel: MainViewModel = getViewModel(),
+) {
     val state = viewModel.userState.collectAsState()
 
     when (state.value) {
-        AppUser.NotLogged -> LoginScreen()
-        AppUser.Logged -> UserScreen()
+        AppUser.NotLogged -> navController.navigate("login")
+        AppUser.Logged -> navController.navigate("user")
     }
-
 }

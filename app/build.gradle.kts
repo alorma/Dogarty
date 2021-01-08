@@ -106,6 +106,7 @@ dependencies {
     implementation("androidx.compose.material:material:1.0.0-alpha09")
     implementation("androidx.compose.material:material-icons-core:1.0.0-alpha09")
     implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha09")
+    implementation("androidx.navigation:navigation-compose:1.0.0-alpha04")
 
     implementation("com.vanpra.compose-material-dialogs:core:0.2.8")
     implementation("com.vanpra.compose-material-dialogs:datetime:0.2.8")

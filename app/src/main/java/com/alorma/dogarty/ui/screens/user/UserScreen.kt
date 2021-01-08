@@ -15,19 +15,22 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.navigate
 import com.alorma.dogarty.domain.model.PetDetail
 import org.koin.androidx.compose.getViewModel
 import timber.log.Timber
 
 @Composable
 fun UserScreen(
+    navController: NavController,
     loggedUserViewModel: LoggedUserViewModel = getViewModel()
 ) {
     val userState = loggedUserViewModel.userDetailState.collectAsState()
 
     when (val value = userState.value.also { Timber.tag("ALORMA-DATA").v(it.toString()) }) {
         UserState.Loading -> CircularProgressIndicator()
-        is UserState.UserReady -> UserReady(value)
+        is UserState.UserReady -> UserReady(value, navController)
         UserState.Error -> Text(text = "error")
     }
 }
@@ -35,6 +38,7 @@ fun UserScreen(
 @Composable
 fun UserReady(
     value: UserState.UserReady,
+    navController: NavController,
     loggedUserViewModel: LoggedUserViewModel = getViewModel()
 ) {
     Scaffold(
@@ -54,7 +58,7 @@ fun UserReady(
         },
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
-            FloatingActionButton(onClick = { }) {
+            FloatingActionButton(onClick = { navController.navigate("gowalk") }) {
                 Icon(imageVector = Icons.Default.NearMe)
             }
         },
