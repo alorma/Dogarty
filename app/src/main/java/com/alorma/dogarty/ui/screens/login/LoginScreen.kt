@@ -1,7 +1,6 @@
 package com.alorma.dogarty.ui.screens.login
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
@@ -12,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.alorma.dogarty.R
+import com.alorma.dogarty.ui.NavigationResult
 import com.alorma.dogarty.ui.screens.FullScreenLoadingScaffold
 import org.koin.androidx.compose.getViewModel
 
@@ -20,13 +20,23 @@ fun LoginScreen(
     navController: NavController,
     loginViewModel: LoginViewModel = getViewModel()
 ) {
-
     val state = loginViewModel.userDetailState.collectAsState()
+
+    navController.previousBackStackEntry?.savedStateHandle?.set(
+        NavigationResult.LOGIN_SUCCESS,
+        false
+    )
 
     when (state.value) {
         LoginState.Loading -> FullScreenLoadingScaffold()
         LoginState.NotLogged -> LoginContent(loginViewModel)
-        LoginState.Logged -> navController.popBackStack()
+        LoginState.Logged -> {
+            navController.previousBackStackEntry?.savedStateHandle?.set(
+                NavigationResult.LOGIN_SUCCESS,
+                true
+            )
+            navController.popBackStack()
+        }
         LoginState.Fail -> Text(text = "Login error")
     }
 }

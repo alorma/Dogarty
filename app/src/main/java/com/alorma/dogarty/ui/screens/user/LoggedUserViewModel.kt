@@ -27,8 +27,14 @@ class LoggedUserViewModel(
             val auth = appAuth.auth()
             when (auth) {
                 AppUser.NotLogged -> _userDetailState.emit(UserState.NotLogged)
-                AppUser.Logged -> loadUser()
+                AppUser.Logged -> {}
             }
+        }
+    }
+
+    fun getUser() {
+        viewModelScope.launch {
+            loadUser()
         }
     }
 

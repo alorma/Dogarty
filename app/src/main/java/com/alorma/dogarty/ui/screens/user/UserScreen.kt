@@ -13,7 +13,6 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.onActive
-import androidx.compose.runtime.onCommit
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -21,6 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
 import com.alorma.dogarty.domain.model.PetDetail
 import com.alorma.dogarty.ui.Navigation
+import com.alorma.dogarty.ui.NavigationResult
 import com.alorma.dogarty.ui.screens.FullScreenLoading
 import com.alorma.dogarty.ui.screens.FullScreenLoadingScaffold
 import com.alorma.dogarty.utils.navToLogin
@@ -32,16 +32,28 @@ fun UserScreen(
     navController: NavController,
     loggedUserViewModel: LoggedUserViewModel = getViewModel()
 ) {
-    val userState = loggedUserViewModel.userDetailState.collectAsState()
-    val value = userState.value
+    val logged = navController.currentBackStackEntry
+        ?.savedStateHandle
+        ?.get<Boolean>(NavigationResult.LOGIN_SUCCESS)
+        ?: false
 
-    Timber.tag("ALORMA-LOGIN").i(value.toString())
+    if (logged) {
+        onActive {
+            loggedUserViewModel.getUser()
+        }
+        val userState = loggedUserViewModel.userDetailState.collectAsState()
+        val value = userState.value
 
-    when (value) {
-        UserState.Loading -> FullScreenLoadingScaffold()
-        UserState.NotLogged -> navController.navToLogin()
-        is UserState.UserReady -> UserReady(value, navController)
-        UserState.Error -> Text(text = "error")
+        Timber.tag("ALORMA-LOGIN").i(value.toString())
+
+        when (value) {
+            UserState.Loading -> FullScreenLoadingScaffold()
+            UserState.NotLogged -> navController.navToLogin()
+            is UserState.UserReady -> UserReady(value, navController)
+            UserState.Error -> Text(text = "error")
+        }
+    } else {
+        navController.navToLogin()
     }
 }
 
