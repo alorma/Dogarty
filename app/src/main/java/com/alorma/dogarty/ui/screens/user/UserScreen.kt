@@ -1,10 +1,16 @@
 package com.alorma.dogarty.ui.screens.user
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import com.alorma.dogarty.domain.model.PetDetail
 import org.koin.androidx.compose.getViewModel
 import timber.log.Timber
@@ -41,6 +47,22 @@ fun UserReady(
                     }
                 },
             )
+        },
+        isFloatingActionButtonDocked = true,
+        floatingActionButton = {
+            FloatingActionButton(onClick = { }) {
+                Icon(imageVector = Icons.Default.NearMe)
+            }
+        },
+        floatingActionButtonPosition = FabPosition.Center,
+        bottomBar = {
+            BottomAppBar(
+                cutoutShape = RoundedCornerShape(percent = 50),
+            ) {
+                IconButton(onClick = {}) { Icon(imageVector = Icons.Default.Menu) }
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(onClick = {}) { Icon(imageVector = Icons.Default.Add) }
+            }
         }
     ) {
         val state = loggedUserViewModel.petsDetailState.collectAsState()
