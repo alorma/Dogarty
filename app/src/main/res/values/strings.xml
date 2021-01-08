@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Dogarty</string>
+    <string name="screen_go_walk_title">Go walk</string>
 </resources>
