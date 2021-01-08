@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
+import com.alorma.dogarty.ui.Navigation
 import com.alorma.dogarty.ui.model.AppUser
 import com.alorma.dogarty.ui.screens.FullScreenLoading
 import org.koin.androidx.compose.getViewModel
@@ -29,7 +30,7 @@ fun LoginScreen(
     when (state.value) {
         AppUser.Loading -> FullScreenLoading()
         AppUser.NotLogged -> LoginContent(loginViewModel)
-        AppUser.Logged -> navController.navigate("user")
+        AppUser.Logged -> navController.navigate(Navigation.ROUTE_USER)
     }
 }
 

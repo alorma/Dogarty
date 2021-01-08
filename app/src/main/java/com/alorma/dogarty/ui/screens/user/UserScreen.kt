@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
 import com.alorma.dogarty.domain.model.PetDetail
+import com.alorma.dogarty.ui.Navigation
 import com.alorma.dogarty.ui.screens.FullScreenLoading
 import org.koin.androidx.compose.getViewModel
 import timber.log.Timber
@@ -59,7 +60,7 @@ fun UserReady(
         },
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
-            FloatingActionButton(onClick = { navController.navigate("gowalk") }) {
+            FloatingActionButton(onClick = { navController.navigate(Navigation.ROUTE_GO_WALK) }) {
                 Icon(imageVector = Icons.Default.NearMe)
             }
         },
