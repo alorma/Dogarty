@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.alorma.dogarty.auth.AppAuth
 import com.alorma.dogarty.domain.model.State
 import com.alorma.dogarty.store.AppStore
-import com.alorma.dogarty.ui.model.AppUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -23,16 +22,6 @@ class LoggedUserViewModel(
     val petsDetailState: StateFlow<PetsState> = _petsDetailState
 
     init {
-        viewModelScope.launch {
-            val auth = appAuth.auth()
-            when (auth) {
-                AppUser.NotLogged -> _userDetailState.emit(UserState.NotLogged)
-                AppUser.Logged -> {}
-            }
-        }
-    }
-
-    fun getUser() {
         viewModelScope.launch {
             loadUser()
         }

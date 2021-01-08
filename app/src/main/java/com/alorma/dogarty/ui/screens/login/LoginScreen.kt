@@ -10,9 +10,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import androidx.navigation.compose.navigate
 import com.alorma.dogarty.R
-import com.alorma.dogarty.ui.NavigationResult
-import com.alorma.dogarty.ui.screens.FullScreenLoadingScaffold
+import com.alorma.dogarty.ui.Navigation
+import com.alorma.dogarty.ui.components.AppTopBar
+import com.alorma.dogarty.ui.components.FullScreenLoadingScaffold
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -22,20 +24,11 @@ fun LoginScreen(
 ) {
     val state = loginViewModel.userDetailState.collectAsState()
 
-    navController.previousBackStackEntry?.savedStateHandle?.set(
-        NavigationResult.LOGIN_SUCCESS,
-        false
-    )
-
     when (state.value) {
         LoginState.Loading -> FullScreenLoadingScaffold()
         LoginState.NotLogged -> LoginContent(loginViewModel)
         LoginState.Logged -> {
-            navController.previousBackStackEntry?.savedStateHandle?.set(
-                NavigationResult.LOGIN_SUCCESS,
-                true
-            )
-            navController.popBackStack()
+            navController.navigate(Navigation.ROUTE_USER)
         }
         LoginState.Fail -> Text(text = "Login error")
     }
@@ -45,12 +38,9 @@ fun LoginScreen(
 fun LoginContent(loginViewModel: LoginViewModel) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                backgroundColor = MaterialTheme.colors.primaryVariant,
-                title = {
-                    Text(text = stringResource(id = R.string.app_name))
-                },
-            )
+            AppTopBar {
+                Text(text = stringResource(id = R.string.app_name))
+            }
         }
     ) {
         Column(

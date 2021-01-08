@@ -20,40 +20,24 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
 import com.alorma.dogarty.domain.model.PetDetail
 import com.alorma.dogarty.ui.Navigation
-import com.alorma.dogarty.ui.NavigationResult
-import com.alorma.dogarty.ui.screens.FullScreenLoading
-import com.alorma.dogarty.ui.screens.FullScreenLoadingScaffold
+import com.alorma.dogarty.ui.components.AppTopBar
+import com.alorma.dogarty.ui.components.FullScreenLoading
+import com.alorma.dogarty.ui.components.FullScreenLoadingScaffold
 import com.alorma.dogarty.utils.navToLogin
 import org.koin.androidx.compose.getViewModel
-import timber.log.Timber
 
 @Composable
 fun UserScreen(
     navController: NavController,
     loggedUserViewModel: LoggedUserViewModel = getViewModel()
 ) {
-    val logged = navController.currentBackStackEntry
-        ?.savedStateHandle
-        ?.get<Boolean>(NavigationResult.LOGIN_SUCCESS)
-        ?: false
+    val userState = loggedUserViewModel.userDetailState.collectAsState()
 
-    if (logged) {
-        onActive {
-            loggedUserViewModel.getUser()
-        }
-        val userState = loggedUserViewModel.userDetailState.collectAsState()
-        val value = userState.value
-
-        Timber.tag("ALORMA-LOGIN").i(value.toString())
-
-        when (value) {
-            UserState.Loading -> FullScreenLoadingScaffold()
-            UserState.NotLogged -> navController.navToLogin()
-            is UserState.UserReady -> UserReady(value, navController)
-            UserState.Error -> Text(text = "error")
-        }
-    } else {
-        navController.navToLogin()
+    when (val value = userState.value) {
+        UserState.Loading -> FullScreenLoadingScaffold()
+        UserState.NotLogged -> navController.navToLogin()
+        is UserState.UserReady -> UserReady(value, navController)
+        UserState.Error -> Text(text = "error")
     }
 }
 
@@ -65,18 +49,15 @@ fun UserReady(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                backgroundColor = MaterialTheme.colors.primaryVariant,
-                title = {
-                    Column {
-                        Text(text = value.nick)
-                        Text(
-                            style = MaterialTheme.typography.subtitle1,
-                            text = value.created.toString()
-                        )
-                    }
-                },
-            )
+            AppTopBar {
+                Column {
+                    Text(text = value.nick)
+                    Text(
+                        style = MaterialTheme.typography.subtitle1,
+                        text = value.created.toString()
+                    )
+                }
+            }
         },
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
