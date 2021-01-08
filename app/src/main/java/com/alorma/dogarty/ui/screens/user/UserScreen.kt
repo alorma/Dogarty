@@ -97,7 +97,7 @@ fun UserReady(
 
 @Composable
 fun PetsReady(items: List<PetDetail>) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(modifier = Modifier.fillMaxSize().padding(top = 4.dp)) {
         items(items) { item -> PetCard(item) }
     }
 }

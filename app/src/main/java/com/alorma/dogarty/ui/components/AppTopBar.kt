@@ -1,9 +1,6 @@
 package com.alorma.dogarty.ui.components
 
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -11,7 +8,7 @@ import androidx.compose.runtime.Composable
 @Composable
 fun AppTopBar(title: @Composable () -> Unit) {
     TopAppBar(
-        backgroundColor = MaterialTheme.colors.primaryVariant,
+        backgroundColor = MaterialTheme.colors.primarySurface,
         title = title,
     )
 }
@@ -22,7 +19,7 @@ fun NavigationAppTopBar(
     title: @Composable () -> Unit
 ) {
     TopAppBar(
-        backgroundColor = MaterialTheme.colors.primaryVariant,
+        backgroundColor = MaterialTheme.colors.primarySurface,
         title = title,
         navigationIcon = {
             IconButton(onClick = onBack) {
