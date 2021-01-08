@@ -18,7 +18,7 @@ class AppAuth(private val auth: FirebaseAuth) {
     }
 
     suspend fun login() = suspendCancellableCoroutine<AppUser> { continuation ->
-        auth.signInWithEmailAndPassword("bernatbor15@gmail.com", "!")
+        auth.signInWithEmailAndPassword("bernatbor15@gmail.com", "aaa111")
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     auth.currentUser?.let { continuation.resume(AppUser.Logged) }

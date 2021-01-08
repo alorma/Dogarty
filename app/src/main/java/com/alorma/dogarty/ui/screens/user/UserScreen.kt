@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
 import com.alorma.dogarty.domain.model.PetDetail
+import com.alorma.dogarty.ui.screens.FullScreenLoading
 import org.koin.androidx.compose.getViewModel
 import timber.log.Timber
 
@@ -29,7 +30,7 @@ fun UserScreen(
     val userState = loggedUserViewModel.userDetailState.collectAsState()
 
     when (val value = userState.value.also { Timber.tag("ALORMA-DATA").v(it.toString()) }) {
-        UserState.Loading -> CircularProgressIndicator()
+        UserState.Loading -> FullScreenLoading()
         is UserState.UserReady -> UserReady(value, navController)
         UserState.Error -> Text(text = "error")
     }

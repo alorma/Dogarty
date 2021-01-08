@@ -4,13 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alorma.dogarty.auth.AppAuth
 import com.alorma.dogarty.ui.model.AppUser
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val appAuth: AppAuth) : ViewModel() {
 
-    private val _userState: MutableStateFlow<AppUser> = MutableStateFlow(AppUser.NotLogged)
+    private val _userState: MutableStateFlow<AppUser> = MutableStateFlow(AppUser.Loading)
     val userState: StateFlow<AppUser> = _userState
 
     init {
