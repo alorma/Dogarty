@@ -49,21 +49,30 @@ class AppStore(
                     offer(State.failed<UserDetail>("Cannot load user"))
                 }
             }
-        awaitClose {
-            registration.remove()
-        }
+        awaitClose { registration.remove() }
     }
 
     fun loadPets(userId: String): Flow<State<List<PetDetail>>> = callbackFlow {
         offer(State.loading<List<PetDetail>>())
 
-        store.collection("/users")
+        val registration = store.collection("/users")
             .document(userId)
             .collection("pets")
-            .get()
-            .addOnSuccessListener { documents ->
-                val pets = documents.mapNotNull { document ->
-                    document.toObject(PetDetailApi::class.java).copy(id = document.id)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    Timber.e(error)
+                    offer(State.failed<List<PetDetail>>(error.cause?.message.orEmpty()))
+                    close(error)
+                    return@addSnapshotListener
+                }
+
+                if (value == null || value.isEmpty) {
+                    offer(State.success(emptyList()))
+                    return@addSnapshotListener
+                }
+
+                val pets = value.documents.mapNotNull { document ->
+                    document.toObject(PetDetailApi::class.java)?.copy(id = document.id)
                 }.filter { petApi ->
                     petApi.birthdate != null && petApi.created_at != null
                 }.map { pet ->
@@ -76,14 +85,8 @@ class AppStore(
                 }
 
                 offer(State.success(pets))
-            }.addOnFailureListener { error ->
-                Timber.e(error)
-                offer(State.failed<List<PetDetail>>(error.cause?.message.orEmpty()))
-                close(error)
             }
 
-        awaitClose {
-
-        }
+        awaitClose { registration.remove() }
     }
 }

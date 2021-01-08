@@ -10,21 +10,29 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(private val appAuth: AppAuth) : ViewModel() {
 
-    private val _userDetailState: MutableStateFlow<AppUser> = MutableStateFlow(AppUser.Loading)
-    val userDetailState: StateFlow<AppUser> = _userDetailState
+    private val _userDetailState: MutableStateFlow<LoginState> =
+        MutableStateFlow(LoginState.NotLogged)
+    val userDetailState: StateFlow<LoginState> = _userDetailState
 
     init {
         viewModelScope.launch {
-            val user = appAuth.auth()
-            _userDetailState.emit(user)
+            _userDetailState.emit(LoginState.NotLogged)
+
+            val auth = appAuth.auth()
+            onAuthState(auth)
         }
+    }
+
+    private suspend fun onAuthState(auth: AppUser) = when (auth) {
+        AppUser.NotLogged -> _userDetailState.emit(LoginState.NotLogged)
+        AppUser.Logged -> _userDetailState.emit(LoginState.Logged)
     }
 
     fun login() {
         viewModelScope.launch {
-            _userDetailState.emit(AppUser.Loading)
+            _userDetailState.emit(LoginState.Loading)
             val user = appAuth.login()
-            _userDetailState.emit(user)
+            onAuthState(user)
         }
     }
 }

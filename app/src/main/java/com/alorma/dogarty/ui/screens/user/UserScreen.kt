@@ -12,6 +12,8 @@ import androidx.compose.material.icons.filled.NearMe
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.onActive
+import androidx.compose.runtime.onCommit
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,6 +22,8 @@ import androidx.navigation.compose.navigate
 import com.alorma.dogarty.domain.model.PetDetail
 import com.alorma.dogarty.ui.Navigation
 import com.alorma.dogarty.ui.screens.FullScreenLoading
+import com.alorma.dogarty.ui.screens.FullScreenLoadingScaffold
+import com.alorma.dogarty.utils.navToLogin
 import org.koin.androidx.compose.getViewModel
 import timber.log.Timber
 
@@ -29,9 +33,13 @@ fun UserScreen(
     loggedUserViewModel: LoggedUserViewModel = getViewModel()
 ) {
     val userState = loggedUserViewModel.userDetailState.collectAsState()
+    val value = userState.value
 
-    when (val value = userState.value.also { Timber.tag("ALORMA-DATA").v(it.toString()) }) {
-        UserState.Loading -> FullScreenLoading()
+    Timber.tag("ALORMA-LOGIN").i(value.toString())
+
+    when (value) {
+        UserState.Loading -> FullScreenLoadingScaffold()
+        UserState.NotLogged -> navController.navToLogin()
         is UserState.UserReady -> UserReady(value, navController)
         UserState.Error -> Text(text = "error")
     }
@@ -76,9 +84,18 @@ fun UserReady(
         }
     ) {
         val state = loggedUserViewModel.petsDetailState.collectAsState()
+        onActive { loggedUserViewModel.loadPets() }
         when (val petsValue = state.value) {
-            PetsState.Loading -> CircularProgressIndicator()
+            PetsState.Loading -> FullScreenLoading()
             is PetsState.PetsReady -> PetsReady(petsValue.items)
+            PetsState.Empty -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "No pets")
+                }
+            }
             PetsState.Error -> Text(text = "error")
         }
 

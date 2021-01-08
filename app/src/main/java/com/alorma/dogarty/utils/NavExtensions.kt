@@ -9,6 +9,3 @@ fun NavController.navToLogin() {
         launchSingleTop = true
     }
 }
-fun NavController.navToUser() {
-    navigate(Navigation.ROUTE_USER)
-}
