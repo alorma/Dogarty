@@ -111,6 +111,10 @@ dependencies {
     implementation("com.vanpra.compose-material-dialogs:core:0.2.8")
     implementation("com.vanpra.compose-material-dialogs:datetime:0.2.8")
 
+    implementation("com.github.alorma:compose-debug-drawer-base:0.0.4")
+    implementation("com.github.alorma:compose-debug-drawer-modules:0.0.4")
+    implementation("com.github.alorma:compose-debug-drawer-shortcuts:0.0.4")
+
     implementation("androidx.room:room-runtime:2.2.6")
     kapt("androidx.room:room-compiler:2.2.6")
 

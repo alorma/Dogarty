@@ -8,12 +8,16 @@ import androidx.compose.ui.platform.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.alorma.developer_shortcuts.ShortcutsModule
 import com.alorma.dogarty.ui.DogartyTheme
 import com.alorma.dogarty.ui.MainViewModel
 import com.alorma.dogarty.ui.Navigation
 import com.alorma.dogarty.ui.screens.gowalk.GoWalkScreen
 import com.alorma.dogarty.ui.screens.login.LoginScreen
 import com.alorma.dogarty.ui.screens.user.UserScreen
+import com.alorma.drawer_base.DebugDrawerLayout
+import com.alorma.drawer_modules.BuildModule
+import com.alorma.drawer_modules.DeviceModule
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +32,18 @@ class MainActivity : AppCompatActivity() {
                 val loggedState = mainViewModel.userDetailState.collectAsState()
                 val loggedValue = loggedState.value
                 if (loggedValue != null) {
-                    CreateGraph(loggedValue)
+                    DebugDrawerLayout(
+                        isDebug = { BuildConfig.DEBUG },
+                        drawerModules = {
+                            listOf(
+                                ShortcutsModule(),
+                                DeviceModule(),
+                                BuildModule(),
+                            )
+                        }
+                    ) {
+                        CreateGraph(loggedValue)
+                    }
                 }
             }
         }
