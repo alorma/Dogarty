@@ -100,20 +100,20 @@ dependencies {
     implementation("org.koin:koin-androidx-compose:2.2.1")
     implementation("org.koin:koin-androidx-ext:2.2.1")
 
-    implementation("androidx.compose.ui:ui:1.0.0-alpha09")
+    implementation("androidx.compose.ui:ui:1.0.0-alpha10")
     implementation("androidx.ui:ui-tooling:1.0.0-alpha07")
-    implementation("androidx.compose.foundation:foundation:1.0.0-alpha09")
-    implementation("androidx.compose.material:material:1.0.0-alpha09")
-    implementation("androidx.compose.material:material-icons-core:1.0.0-alpha09")
+    implementation("androidx.compose.foundation:foundation:1.0.0-alpha10")
+    implementation("androidx.compose.material:material:1.0.0-alpha10")
+    implementation("androidx.compose.material:material-icons-core:1.0.0-alpha10")
     implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha09")
     implementation("androidx.navigation:navigation-compose:1.0.0-alpha04")
 
     implementation("com.vanpra.compose-material-dialogs:core:0.2.8")
     implementation("com.vanpra.compose-material-dialogs:datetime:0.2.8")
 
-    implementation("com.github.alorma:compose-debug-drawer-base:0.0.4")
-    implementation("com.github.alorma:compose-debug-drawer-modules:0.0.4")
-    implementation("com.github.alorma:compose-debug-drawer-shortcuts:0.0.4")
+    implementation("com.github.alorma:compose-debug-drawer-base:1.0.0-alpha10-SNAPSHOT")
+    implementation("com.github.alorma:compose-debug-drawer-modules:1.0.0-alpha10-SNAPSHOT")
+    implementation("com.github.alorma:compose-debug-drawer-shortcuts:1.0.0-alpha10-SNAPSHOT")
 
     implementation("androidx.room:room-runtime:2.2.6")
     kapt("androidx.room:room-compiler:2.2.6")
