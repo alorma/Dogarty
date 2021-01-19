@@ -47,7 +47,7 @@ fun <T> DropdownComponent(
     DropdownMenu(
         dropdownModifier = Modifier.fillMaxWidth(),
         toggle = {
-            
+
         },
         expanded = isExpanded.value,
         onDismissRequest = { isExpanded.value = false }) {
@@ -127,4 +127,4 @@ fun DropDownItemComponentPreview() {
     }
 }
 
-data class Forlayo(val text: String)
+internal data class Forlayo(val text: String)

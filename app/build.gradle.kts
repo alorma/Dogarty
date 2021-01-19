@@ -108,8 +108,8 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha10")
     implementation("androidx.navigation:navigation-compose:1.0.0-alpha05")
 
-    implementation("com.vanpra.compose-material-dialogs:core:0.2.8")
-    implementation("com.vanpra.compose-material-dialogs:datetime:0.2.8")
+    implementation("com.vanpra.compose-material-dialogs:core:0.2.11")
+    implementation("com.vanpra.compose-material-dialogs:datetime:0.2.11")
 
     implementation("com.github.alorma:compose-debug-drawer-base:1.1.0-alpha10")
     implementation("com.github.alorma:compose-debug-drawer-modules:1.1.0-alpha10")
