@@ -13,7 +13,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.focus.isFocused
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -25,37 +26,39 @@ fun <T> DropdownComponent(
     onItemSelected: (T) -> Unit
 ) {
     val textState = remember { mutableStateOf(defaultValue?.let(itemFormatter) ?: "") }
-
     val isExpanded = remember { mutableStateOf(false) }
 
     TextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .onFocusChanged { focusState ->
+                isExpanded.value = focusState.isFocused
+            },
         value = textState.value,
         readOnly = true,
-        label = label?.let { labelText -> { Text(text = labelText) } },
-        textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
         trailingIcon = {
-            DropdownMenu(
-                dropdownModifier = Modifier.fillMaxWidth(),
-                toggle = {
-                    IconButton(onClick = { isExpanded.value = true }) {
-                        DropdownIcon(isExpanded.value)
-                    }
-                },
-                expanded = isExpanded.value,
-                onDismissRequest = { isExpanded.value = false }) {
-                items.forEach { item ->
-                    DropdownItemComponent(item) { clickItem ->
-                        textState.value = itemFormatter(clickItem)
-                        isExpanded.value = false
-                        onItemSelected(clickItem)
-                    }
-                }
+            IconButton(onClick = { isExpanded.value = !isExpanded.value }) {
+                DropdownIcon(isExpanded = isExpanded.value)
             }
         },
-        onValueChange = { newValue ->
-            textState.value = newValue
-        })
+        label = label?.let { labelText -> { Text(text = labelText) } },
+        onValueChange = { },
+    )
+    DropdownMenu(
+        dropdownModifier = Modifier.fillMaxWidth(),
+        toggle = {
+            
+        },
+        expanded = isExpanded.value,
+        onDismissRequest = { isExpanded.value = false }) {
+        items.forEach { item ->
+            DropdownItemComponent(item) { clickItem ->
+                textState.value = itemFormatter(clickItem)
+                isExpanded.value = false
+                onItemSelected(clickItem)
+            }
+        }
+    }
 }
 
 @Composable
