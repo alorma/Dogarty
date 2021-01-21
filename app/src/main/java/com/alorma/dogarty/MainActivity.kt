@@ -2,9 +2,15 @@ package com.alorma.dogarty
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.setContent
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -35,11 +41,13 @@ class MainActivity : AppCompatActivity() {
                     DebugDrawerLayout(
                         isDebug = { BuildConfig.DEBUG },
                         drawerModules = {
-                            listOf(
-                                ShortcutsModule(),
-                                DeviceModule(),
-                                BuildModule(),
-                            )
+                            val modulesModifier = Modifier
+                                .padding(4.dp)
+                                .clip(shape = MaterialTheme.shapes.medium)
+                                .background(color = MaterialTheme.colors.surface)
+                            ShortcutsModule(modulesModifier)
+                            BuildModule(modulesModifier)
+                            DeviceModule(modulesModifier)
                         }
                     ) {
                         CreateGraph(loggedValue)
